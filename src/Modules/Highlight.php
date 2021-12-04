@@ -9,7 +9,7 @@
  * @package Githuber
  * @since 1.0.0
  * @version 1.4.0
- * 
+ *
  */
 
 namespace Githuber\Module;
@@ -21,7 +21,7 @@ class Highlight extends ModuleAbstract {
 	 *
 	 * @var string
 	 */
-	public $highlight_version = '9.15.10';
+	public $highlight_version = '11.3.1';
 
 	/**
 	 * The priority order to load CSS file, the value should be higher than theme's.
@@ -69,7 +69,7 @@ class Highlight extends ModuleAbstract {
 		'cpp'            => 'C++',
 		'crmsh'          => 'crmsh',
 		'crystal'        => 'Crystal',
-		'cs'             => 'C#',
+		'csharp'         => 'C#',
 		'csp'            => 'CSP',
 		'css'            => 'CSS',
 		'd'              => 'D',
@@ -109,7 +109,6 @@ class Highlight extends ModuleAbstract {
 		'haskell'        => 'Haskell',
 		'haxe'           => 'Haxe',
 		'hsp'            => 'HSP',
-		'htmlbars'       => 'HTMLBars',
 		'http'           => 'HTTP (Header Plaintext)',
 		'hy'             => 'Hy',
 		'inform7'        => 'Inform 7',
@@ -123,7 +122,8 @@ class Highlight extends ModuleAbstract {
 		'julia-repl'     => 'Julia REPL',
 		'julia'          => 'Julia',
 		'kotlin'         => 'Kotlin',
-		'lasso'          => 'Lasso',
+        'lasso'          => 'Lasso',
+		'latex'          => 'Latex',
 		'ldif'           => 'LDIF',
 		'leaf'           => 'Leaf',
 		'less'           => 'Less',
@@ -146,9 +146,11 @@ class Highlight extends ModuleAbstract {
 		'monkey'         => 'Monkey',
 		'moonscript'     => 'MoonScript',
 		'n1ql'           => 'N1QL',
+		'nestedtext'     => 'Nestedtext',
 		'nginx'          => 'Nginx',
-		'nimrod'         => 'Nim (formerly Nimrod)',
+		'nim'            => 'Nim (formerly Nimrod)',
 		'nix'            => 'Nix',
+        'node-repl'      => 'Node REPL',
 		'nsis'           => 'NSIS',
 		'objectivec'     => 'Objective-C',
 		'ocaml'          => 'OCaml',
@@ -158,6 +160,7 @@ class Highlight extends ModuleAbstract {
 		'perl'           => 'Perl',
 		'pf'             => 'pf.conf',
 		'pgsql'          => 'PostgreSQL SQL dialect and PL/pgSQL',
+        'php-template'   => 'PHP Template',
 		'php'            => 'PHP',
 		'plaintext'      => 'Plaintext',
 		'pony'           => 'Pony',
@@ -169,6 +172,7 @@ class Highlight extends ModuleAbstract {
 		'protobuf'       => 'Protocol Buffers',
 		'puppet'         => 'Puppet',
 		'purebasic'      => 'PureBASIC',
+        'python-repl'    => 'Pythin REPL',
 		'python'         => 'Pythin',
 		'q'              => 'Q',
 		'qml'            => 'QML',
@@ -201,18 +205,19 @@ class Highlight extends ModuleAbstract {
 		'taggerscript'   => 'Tagger Script',
 		'tap'            => 'Test Anything Protocol',
 		'tcl'            => 'Tcl',
-		'tex'            => 'TeX',
 		'thrift'         => 'Thrift',
 		'tp'             => 'TP',
 		'twig'           => 'Twig',
 		'typescript'     => 'TypeScript',
 		'vala'           => 'Vala',
 		'vbnet'          => 'VB.NET',
-		'vbscript-html'  => 'VBScript in HTML',
-		'vbscript'       => 'VBScript in HTML',
+        'vbscript-html'  => 'VBScript in HTML',
+        'vbscript'       => 'VBScript in HTML',
 		'verilog'        => 'Verilog',
 		'vhdl'           => 'VHDL',
 		'vim'            => 'Vim Script',
+		'wasm'           => 'WebAssembly',
+		'wren'           => 'wren',
 		'x86asm'         => 'Intel x86 Assembly',
 		'xl'             => 'XL',
 		'xml'            => 'HTML, XML',
@@ -225,7 +230,7 @@ class Highlight extends ModuleAbstract {
 	 * Constant. Should be same as `Markdown::MD_POST_META_HIGHLIGHT`.
 	 */
 	const MD_POST_META_HIGHLIGHT = '_githuber_highlightjs';
-	
+
 	/**
 	 * Constructer.
 	 */
@@ -243,10 +248,10 @@ class Highlight extends ModuleAbstract {
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_enqueue_scripts' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'front_print_footer_scripts' ) );
 	}
- 
+
 	/**
 	 * Register CSS style files for frontend use.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function front_enqueue_styles() {
@@ -274,7 +279,7 @@ class Highlight extends ModuleAbstract {
 
 	/**
 	 * Register JS files for frontend use.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function front_enqueue_scripts() {
@@ -298,7 +303,7 @@ class Highlight extends ModuleAbstract {
 					}
 					break;
 
-				default: 
+				default:
 					$script_url[] = $this->githuber_plugin_url . 'assets/vendor/highlight.js/highlight.min.js';
 
 					if ( ! empty( $highlight_meta_array ) ) {
